@@ -42,6 +42,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'project_apps.main_app.apps.MainAppConfig',
+    'project_apps.cars.apps.CarsConfig',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
