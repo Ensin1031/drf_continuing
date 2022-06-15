@@ -38,6 +38,8 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'rest_framework',
     'debug_toolbar',
+    'rest_framework.authtoken',
+    'djoser',
 )
 
 LOCAL_APPS = (
@@ -138,9 +140,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-MEDIA_ROOT = os.path.join(APPS_DIR, 'media')    # указываем корневой каталог для медиа файлов
+MEDIA_ROOT = os.path.join(APPS_DIR, 'media')
 
-MEDIA_URL = '/media/'   # нужен для построения пути при загрузке файлов
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -156,5 +158,14 @@ INTERNAL_IPS = ['127.0.0.1']
 # https://www.django-rest-framework.org/
 
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [       # настройка рендеров
+        'rest_framework.renderers.JSONRenderer',      # https://www.django-rest-framework.org/api-guide/renderers/
+        'rest_framework.renderers.BrowsableAPIRenderer',  # при исключении из настроек - убирается браузерная версия
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',  # настройка DRF, разрешающая аутентификацию по токенам
+        'rest_framework.authentication.BasicAuthentication',  # настройка DRF, базовая аутентификацию по сессиям
+        'rest_framework.authentication.SessionAuthentication',  # настройка DRF, разрешающая аутентификацию по сессиям
+    ),
 
 }

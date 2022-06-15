@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework import generics
+# from rest_framework import permissions
 
 from .models import Car
 from .serializers import CarDetailSerializer, CarsListSerializer
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
 
 
 def index(request):
@@ -24,16 +26,20 @@ class CarCreateView(generics.CreateAPIView):
     """Создание записи в модели Car"""
     queryset = Car.objects.all()
     serializer_class = CarDetailSerializer
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class CarListView(generics.ListAPIView):
+    """Просмотр всех записей, по кверисету"""
     queryset = Car.objects.all()
     serializer_class = CarsListSerializer
 
 
 class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Просмотр, редактирование и удаление одной записи"""
     queryset = Car.objects.all()
     serializer_class = CarDetailSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
 
 
 """
@@ -43,3 +49,14 @@ ListCreateAPIView (queryset =, serializer_class =) - просмотр всех �
 
 RetrieveUpdateDestroyAPIView (queryset =, serializer_class =) - позволяет осуществлять весь перечень действий по CRUD с 1 объектом
 """
+
+
+"""     Пермишны
+туториал: https://www.django-rest-framework.org/api-guide/permissions/
+Ограничение доступа (permissions):
+permissions.AllowAny - полный доступ - дефолтное значение, если ничего не указано
+permissions.IsAuthenticated - только для авторизированных пользователей
+permissions.IsAdminUser - только для администраторов
+permissions.IsAuthenticatedOrReadOnly - только для авторизированных или всем, но для чтения
+"""
+

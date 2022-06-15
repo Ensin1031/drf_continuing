@@ -21,7 +21,11 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('project_apps.main_app.urls')),
+    path('api/v1/base-auth/', include('rest_framework.urls')),  # дефолтная, базовая аутентификация, достаточно только этой строчки
+    path('api/v1/auth/', include('djoser.urls')),  # базовая аутентификация с помощью djoser
+    path('api/v1/auth_token/', include('djoser.urls.authtoken')),  # djoser аутентификация с помощью токенов
     path('api/v1/cars/', include('project_apps.cars.urls')),
+    # http://127.0.0.1:8000/api/v1/auth_token/token/login - получение токена
 ]
 
 if settings.DEBUG:
